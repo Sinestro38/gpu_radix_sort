@@ -36,7 +36,7 @@ nvcc -std=c++17 benchmark_radix_sort.cu radix_sort.cu -o benchmark -O3
 
 Example output:
 ```bash
-ubuntu@192-222-56-240:~/tmp$ ./run_benchmark.sh
+$ ./run_benchmark.sh
 Compiling radix sort benchmark...
 Compilation successful!
 
