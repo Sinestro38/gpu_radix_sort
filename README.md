@@ -1,6 +1,6 @@
 # Minimal GPU Radix Sort
 
-A simple CUDA implementation of radix sort for integer key-value pairs. The core sorting kernel is just ~110 lines of code and demonstrates basic GPU radix sort concepts. Can easily be extended to other data types by adding few LOC normalizations to uint.
+A simple CUDA implementation of radix sort for integer key-value pairs. The core sorting kernel is just ~110 lines of code and demonstrates basic GPU radix sort concepts. Can easily be extended to other data types by adding few LOC normalizations into uint.
 
 ## What it does
 
