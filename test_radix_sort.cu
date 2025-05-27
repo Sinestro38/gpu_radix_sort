@@ -3,9 +3,9 @@
 #include <vector>
 #include <algorithm>
 #include <random>
-#include <iomanip> // For std::fixed and std::setprecision
-#include <limits>  // For std::numeric_limits
-#include <stdexcept> // For std::runtime_error
+#include <iomanip> // for std::fixed and std::setprecision
+#include <limits>  // for std::numeric_limits
+#include <stdexcept> // for std::runtime_error
 
 // Helper to print arrays for debugging
 template <typename T>
@@ -40,7 +40,7 @@ struct IntKeyValuePair {
 };
 
 bool compareIntKeyValuePairsDesc(const IntKeyValuePair& a, const IntKeyValuePair& b) {
-    // For descending sort of original keys, we sort normalized keys descendingly.
+    // For descending sort of original keys, we sort normalized keys descendingly
     if (a.normalized_key != b.normalized_key) {
         return a.normalized_key > b.normalized_key;
     }
@@ -70,7 +70,7 @@ void test_simple_case() {
     }
     std::cout << std::dec << std::endl;
     
-    // GPU Radix Sort
+    // GPU radix sort
     launch_radix_sort_int_descending<256, 4>(
         h_input_keys.data(),
         h_output_keys_gpu.data(),
@@ -121,8 +121,8 @@ void test_radix_sort_int_descending(
 
     size_t total_elements = (size_t)batch_size * num_elements_per_batch;
     std::vector<int> h_input_keys(total_elements);
-    // h_input_key_ids is not sent to GPU, kernel generates 0..N-1 for first pass.
-    // But we need it for CPU verification.
+    // h_input_key_ids is not sent to GPU, kernel generates 0..N-1 for first pass
+    // But we need it for CPU verification
     std::vector<int> h_original_ids_for_cpu(total_elements);
     std::vector<int> h_output_keys_gpu(total_elements);
     std::vector<int> h_output_key_ids_gpu(total_elements);
@@ -131,7 +131,7 @@ void test_radix_sort_int_descending(
     std::vector<int> h_expected_key_ids(total_elements);
 
     // Initialize input data
-    std::mt19937 gen(123); // Fixed seed
+    std::mt19937 gen(123); // fixed seed
     std::uniform_int_distribution<int> dis(-10000, 10000);
     for (size_t i = 0; i < total_elements; ++i) {
         h_input_keys[i] = dis(gen);
@@ -145,7 +145,7 @@ void test_radix_sort_int_descending(
 
     // print_array("Host Input Keys (Initial)", h_input_keys.data(), total_elements);
 
-    // GPU Radix Sort (descending for int)
+    // GPU radix sort (descending for int)
     launch_radix_sort_int_descending<
         256, // BLOCK_SIZE
         4    // NUM_BITS_PER_PASS
@@ -157,7 +157,7 @@ void test_radix_sort_int_descending(
         num_elements_per_batch
     );
 
-    // CPU Sort for verification (per batch, descending)
+    // CPU sort for verification (per batch, descending)
     for (int b = 0; b < batch_size; ++b) {
         int start_idx = b * num_elements_per_batch;
 
@@ -182,7 +182,7 @@ void test_radix_sort_int_descending(
         for (int i = 0; i < num_elements_per_batch; ++i) {
             size_t idx = (size_t)b * num_elements_per_batch + i;
             if (h_expected_keys[idx] != h_output_keys_gpu[idx] || h_expected_key_ids[idx] != h_output_key_ids_gpu[idx]) {
-                if(batch_success) { // Print headers only once per failed batch
+                if(batch_success) { // print headers only once per failed batch
                     std::cerr << "Verification FAILED for Batch " << b << std::endl;
                     print_array("GPU Output Keys", h_output_keys_gpu.data(), num_elements_per_batch, b, num_elements_per_batch);
                     print_array("GPU Output IDs", h_output_key_ids_gpu.data(), num_elements_per_batch, b, num_elements_per_batch);
@@ -208,15 +208,15 @@ void test_radix_sort_int_descending(
 
 int main() {
     try {
-        test_simple_case();  // Start with simple case
-        test_radix_sort_int_descending(1, 16);   // Small test
+        test_simple_case();  // start with simple case
+        test_radix_sort_int_descending(1, 16);   // small test
         test_radix_sort_int_descending(1, 32);   // 32 elements
         test_radix_sort_int_descending(1, 64);   // 64 elements  
         test_radix_sort_int_descending(1, 128);  // 128 elements
-        test_radix_sort_int_descending(1, 256);  // Equal to block size
-        test_radix_sort_int_descending(1, 512);  // Larger than block size
-        test_radix_sort_int_descending(1, 1024); // Much larger than block size
-        test_radix_sort_int_descending(4, 1024); // Multiple batches with large arrays
+        test_radix_sort_int_descending(1, 256);  // equal to block size
+        test_radix_sort_int_descending(1, 512);  // larger than block size
+        test_radix_sort_int_descending(1, 1024); // much larger than block size
+        test_radix_sort_int_descending(4, 1024); // multiple batches with large arrays
         
         std::cout << "\nAll integer descending sort tests completed successfully." << std::endl;
 
