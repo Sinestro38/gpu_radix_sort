@@ -36,9 +36,8 @@ nvcc -std=c++17 benchmark_radix_sort.cu radix_sort.cu -o benchmark -O3
 
 Example output:
 ```bash
-$ nvcc -std=c++17 benchmark_large.cu radix_sort.cu -o radix_sort_benchmark      -
-Xcompiler "-Wall -Wextra" -O3 -arch=sm_90 --use_fast_math
-ubuntu@192-222-56-240:~/tmp$ ./radix_sort_benchmark 
+$ nvcc -std=c++17 benchmark_large.cu radix_sort.cu -o radix_sort_benchmark -Xcompiler "-Wall -Wextra" -O3 -arch=sm_90 --use_fast_math
+$ ./radix_sort_benchmark 
 GPU: NVIDIA GH200 480GB (Compute 9.0)
 Memory: 94 GB, Bandwidth: 4022.8 GB/s
 
